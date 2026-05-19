@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Scan: TOBA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        body {
+            margin: 0; background: #050b14; color: #00ffcc;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden;
+        }
+        
+        .terminal {
+            width: 90%; max-width: 500px; padding: 20px;
+            border: 1px solid #00ffcc; background: rgba(0, 255, 204, 0.05);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            border-radius: 10px; margin-bottom: 30px;
+        }
+        
+        #scan-area { display: flex; flex-direction: column; align-items: center; }
+        
+        /* High-tech fingerprint icon using emoji and CSS magic */
+        .fingerprint-btn {
+            font-size: 6rem; cursor: pointer; user-select: none;
+            position: relative; overflow: hidden;
+            border-radius: 20px; padding: 20px;
+            border: 2px dashed #333; transition: all 0.3s;
+        }
+        
+        .scanning { border-color: #00ffcc; box-shadow: 0 0 30px rgba(0, 255, 204, 0.5); }
+        
+        .scan-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: #00ffcc; box-shadow: 0 0 10px #00ffcc;
+            display: none; animation: scan 1.5s infinite linear;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+        
+        .progress-bar { width: 100%; height: 10px; background: #222; margin-top: 20px; border-radius: 5px; overflow: hidden; }
+        #progress { width: 0%; height: 100%; background: #00ffcc; transition: width 0.1s; }
+    </style>
+</head>
+<body>
+
+    <div class="terminal">
+        <p>> INITIALIZING MEDICAL DATABASE...</p>
+        <p>> SEARCHING FOR: <span style="color: #ff4757;">FUTURE DR. TOBA</span></p>
+        <p id="system-status">> SYSTEM LOCKED. BIOMETRIC REQUIRED.</p>
+    </div>
+
+    <div id="scan-area">
+        <div id="fingerprint" class="fingerprint-btn">
+            👆
+            <div class="scan-line" id="scan-line"></div>
+        </div>
+        <p style="margin-top: 15px;">HOLD THUMB TO VERIFY</p>
+        <div class="progress-bar"><div id="progress"></div></div>
+    </div>
+
+    <script>
+        const fp = document.getElementById('fingerprint');
+        const scanLine = document.getElementById('scan-line');
+        const progress = document.getElementById('progress');
+        const status = document.getElementById('system-status');
+        
+        let scanInterval;
+        let progressValue = 0;
+
+        const startScan = (e) => {
+            e.preventDefault();
+            fp.classList.add('scanning');
+            scanLine.style.display = 'block';
+            status.innerText = "> SCANNING DNA AND MEDICAL POTENTIAL...";
+            
+            scanInterval = setInterval(() => {
+                progressValue += 2;
+                progress.style.width = progressValue + '%';
+                
+                if(progressValue >= 100) {
+                    clearInterval(scanInterval);
+                    status.innerText = "> ACCESS GRANTED! WELCOME DR. TOBA.";
+                    status.style.color = "#00ffcc";
+                    setTimeout(() => { window.location.href = 'game.html'; }, 1000);
+                }
+            }, 50);
+        };
+
+        const stopScan = () => {
+            clearInterval(scanInterval);
+            if(progressValue < 100) {
+                progressValue = 0;
+                progress.style.width = '0%';
+                fp.classList.remove('scanning');
+                scanLine.style.display = 'none';
+                status.innerText = "> SCAN FAILED! HOLD ANGUTHA PROPERLY MOTI!";
+                status.style.color = "#ff4757";
+            }
+        };
+
+        fp.addEventListener('mousedown', startScan);
+        fp.addEventListener('touchstart', startScan, {passive: false});
+        window.addEventListener('mouseup', stopScan);
+        window.addEventListener('touchend', stopScan);
+    </script>
+</body>
+</html>

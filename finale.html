@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Toba!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap');
+        
+        body { margin: 0; background: #000; overflow-x: hidden; font-family: 'Quicksand', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-top: 50px; }
+        
+        /* Background Animated Gradient */
+        .bg-gradient { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(45deg, #12002b, #30004a, #001f3f); background-size: 400% 400%; animation: gradientBG 10s ease infinite; z-index: -2; }
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+
+        /* Dancing Cats */
+        .cat-dance { position: absolute; bottom: 20px; width: 120px; z-index: 5; display: none; }
+        .cat-left { left: 10px; }
+        .cat-right { right: 10px; transform: scaleX(-1); }
+
+        /* The Magical Envelope / Card */
+        .gift-box { position: relative; width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 30px; box-shadow: 0 0 40px rgba(255, 105, 180, 0.4); text-align: center; padding: 40px 20px; cursor: pointer; transition: 0.5s; z-index: 10; }
+        
+        .gift-box:hover { box-shadow: 0 0 60px rgba(255, 105, 180, 0.7); transform: translateY(-5px); }
+        
+        .tap-msg { font-size: 1.5rem; color: #ff9ff3; font-family: 'Pacifico', cursive; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+
+        /* The Revealed Content (Hidden initially) */
+        .content { display: none; animation: fadeIn 1.5s; }
+        @keyframes fadeIn { from {opacity: 0; transform: scale(0.9);} to {opacity: 1; transform: scale(1);} }
+
+        /* Photo Frame */
+        .photo-frame { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px; border: 4px solid #00d2d3; padding: 5px; box-shadow: 0 0 20px #00d2d3; overflow: hidden; background: #fff; }
+        .photo-frame img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        h1 { font-family: 'Pacifico', cursive; color: #ff9ff3; font-size: 3rem; margin: 10px 0; }
+        h2 { color: #00d2d3; font-size: 1.5rem; margin-bottom: 20px; }
+        
+        p { font-size: 1.1rem; color: #fff; line-height: 1.6; margin-bottom: 15px; }
+        
+        .roast { background: rgba(255, 71, 87, 0.2); border-left: 5px solid #ff4757; padding: 15px; border-radius: 10px; font-style: italic; margin: 25px 0; }
+        .roast span { font-size: 1.5rem; }
+
+        .from { font-size: 1.3rem; color: #feca57; font-weight: bold; margin-top: 30px; font-family: 'Pacifico', cursive;}
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+
+    <!-- 🎵 GAANA YAHA LAGEGA 🎵 -->
+    <!-- Apne folder me ek gaana download kar "happy_birthday.mp3" naam se aur same folder me rakh de -->
+    <audio id="bday-music" loop>
+        <source src="Happy Birthday to You Ji.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Dancing Cats (Tenor GIFs) -->
+    <img src="https://media1.tenor.com/m/Z-aX_oZz4m8AAAAd/cat-dancing.gif" class="cat-dance cat-left" id="cat1">
+    <img src="https://media1.tenor.com/m/Z-aX_oZz4m8AAAAd/cat-dancing.gif" class="cat-dance cat-right" id="cat2">
+
+    <div class="gift-box" id="card" onclick="revealMagic()">
+        
+        <div id="cover-text">
+            <h1 style="font-size: 4rem;">🎁</h1>
+            <div class="tap-msg">Tap to Open My Magic Gift! ✨</div>
+        </div>
+
+        <div class="content" id="main-content">
+            <div class="photo-frame">
+                <!-- 🖼️ TOBA KI PHOTO YAHA LAGEGI 🖼️ -->
+                <!-- Apni photo ka naam yaha daal de, jaise "toba_ki_photo.jpg" -->
+                <img src="toba.jpg" alt="Chhota Badmosh Toba">
+            </div>
+            
+            <h1>Happy Birthday Toba!</h1>
+            <h2>Future Best Doctor In house 🩺</h2>
+            
+            <p>Meri sabse khaas best friend aur apun ki <strong>'chhota badmosh'</strong>! Tumhara doctor banne ka sapna 100% poora hoga kyuki apun ne kala jadu kar dia hai .</p>
+            
+            <div class="roast">
+                <span>🍔</span> Oye moti! Aaj ke din cake daba ke kha lena, par kal se padhai ke sath-sath diet par bhi dhyan dena. Doctors ko khud bhi fit rehna padta hai na! 😂 Par sach kahu, jaisi bhi hai tu apun ki best friend hai.
+            </div>
+            
+            <p>Kabhi badalna mat. Always keep smiling, balveer wala toba Party pending hai!</p>
+            
+            <div class="from">~ bada badmosh dar ke rhena  ❤️</div>
+        </div>
+    </div>
+
+    <!-- Confetti Script -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        let opened = false;
+
+        function revealMagic() {
+            if(opened) return;
+            opened = true;
+
+            // 1. Play Birthday Song
+            document.getElementById('bday-music').play().catch(error => console.log("Music click ke baad bajega bhai: ", error));
+
+            // 2. Hide cover, show content
+            document.getElementById('cover-text').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('card').style.cursor = 'default';
+
+            // 3. Show Dancing Cats
+            document.getElementById('cat1').style.display = 'block';
+            document.getElementById('cat2').style.display = 'block';
+
+            // 4. BLAST CONFETTI!
+            let duration = 15 * 1000;
+            let animationEnd = Date.now() + duration;
+            let defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            let interval = setInterval(function() {
+                let timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                let particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
